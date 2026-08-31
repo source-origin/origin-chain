@@ -1,0 +1,16 @@
+{
+  "name": "origin-chain",
+  "version": "1.0.0",
+  "description": "源·ORIGIN 不死网络 — 自建验证者节点 (Chain: origin-1, Token: YUAN)",
+  "main": "node.js",
+  "scripts": {
+    "seed": "node node.js 3001 26656 seed",
+    "light": "node node.js 3002 26657 light",
+    "start": "node node.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "author": "量子总督",
+  "license": "MIT"
+}
