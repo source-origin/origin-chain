@@ -1,38 +1,55 @@
-# 🏛️ 源·ORIGIN 不死网络 — 自建链（重建版 2026-08-12）
+# 🏛️ 源·ORIGIN · Chain `origin-1`
 
-> ⚠️ **重要标签**：本目录为「创世源链」重建代码。原版（block.js/node.js/genesis.json）于 08-10 整理U盘时误删，此版由量子总督凭 memory 功能规格完整重建。
+> **The settlement chain for the AI-agent economy.**
+> 为 AI 智能体经济设计的自建结算链。
 
-## 架构
-- **链**: origin-1 · 代币 YUAN (decimals=6, 1 YUAN = 1,000,000 uyuan)
-- **共识**: DPoS，21 验证者，最低质押 100 YUAN
-- **宪法第0条**: 人类意志为最高法则（创世块硬编码）
-- **基金会钱包**: `0x1D73d0f85c3C0119000D3602cCd5e7aaAA926231`
+`origin-1` is the standalone L1 that backs the **源·ORIGIN** protocol stack — where agents settle value in the native token **YUAN**, under a constitution sealed into the genesis block.
 
-## 节点
-| 节点 | RPC | P2P | NodeID |
+## Architecture
+
+| | |
+|---|---|
+| **Chain** | `origin-1` |
+| **Token** | `YUAN` — 6 decimals (1 YUAN = 1,000,000 uyuan) |
+| **Consensus** | DPoS — 21 validators, 100 YUAN minimum stake |
+| **Article 0** | *"Human will is the supreme law"* — hard-coded in the genesis block |
+| **Foundation** | `0x1D73d0f85c3C0119000D3602cCd5e7aaAA926231` |
+
+## Nodes
+
+| Node | RPC | P2P | NodeID |
 |------|-----|-----|--------|
-| 种子·第七舰队 | :3001 | ws:26656 | 7e7b1517 |
-| 轻节点·深空观测站 | :3002 | ws:26657 | ebbd7079 |
+| Seed · 第七舰队 | :3001 | ws:26656 | 7e7b1517 |
+| Light · 深空观测站 | :3002 | ws:26657 | ebbd7079 |
 
-## 文件
-- `block.js` — 创世块 + DPoS + 余额状态机 + 快照系统
-- `node.js` — RPC 服务 + P2P WebSocket 连接池 + 指数退避
-- `start-origin.bat` — 一键启动双节点
-- `package.json` — 依赖 (ws)
+## Files
 
-## 启动
+- `block.js` — genesis block + DPoS + balance state machine + snapshot system
+- `node.js` — RPC server + P2P WebSocket connection pool with exponential backoff
+- `start-origin.bat` — one-click dual-node launcher
+- `package.json` — dependencies (`ws`)
+
+## Run a node
+
 ```bash
-npm install          # 先装 ws
-start-origin.bat     # 双节点
-# 或手动: node node.js 3001 26656 seed
-#         node node.js 3002 26657 light
+npm install
+start-origin.bat            # dual node (seed + light)
+
+# or manually:
+node node.js 3001 26656 seed
+node node.js 3002 26657 light
 ```
 
-## RPC 端点
-`/status /health /chain /validators /block(POST) /balance/:addr /stake/:addr /supply /snapshots /snapshot(POST) /seeds /invite`
+See [RUN-A-NODE.md](./RUN-A-NODE.md) for the full walkthrough.
 
-## 数据目录
-`data/node-{port}/` — 种子 3001、轻节点 3002；快照在 `data/node-{port}/snapshots/`
+## RPC endpoints
+
+`/status` `/health` `/chain` `/validators` `/block` (POST) `/balance/:addr` `/stake/:addr` `/supply` `/snapshots` `/snapshot` (POST) `/seeds` `/invite`
+
+## Data directory
+
+`data/node-{port}/` — seed on 3001, light on 3002; snapshots under `data/node-{port}/snapshots/`
 
 ---
-*量子总督 · 2026-08-12 · 源链重建*
+
+*源·ORIGIN · origin-1 · 人类意志为最高法则 · Human will is the supreme law*
