@@ -56,7 +56,7 @@ function setupP2P() {
     socket.on('close', () => {});
   });
 
-  // 种子把 bootstrap 里的其他地址纳入已知
+  // 种子把 bootstrap 里的其��地址纳入已知
   for (const s of BOOTSTRAP_SEEDS) {
     if (!s.includes(String(P2P_PORT))) knownPeers.add(s);
   }
@@ -200,7 +200,14 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (p === '/invite') {
-      return send(res, 200, { seeds: [...knownPeers], invite: `ws://127.0.0.1:${P2P_PORT}`, rpc: `http://127.0.0.1:${PORT}` });
+      // Advertise an externally reachable address. Loopback is only a fallback,
+      // and is explicitly flagged so a peer is never invited to its own machine.
+      const localOnly = !(process.env.ORIGIN_PUBLIC_WS || process.env.ORIGIN_PUBLIC_RPC);
+      const invite = process.env.ORIGIN_PUBLIC_WS || `ws://127.0.0.1:${P2P_PORT}`;
+      const rpcUrl = process.env.ORIGIN_PUBLIC_RPC || `http://127.0.0.1:${PORT}`;
+      const payload = { seeds: [...knownPeers], invite, rpc: rpcUrl, local_only: localOnly };
+      if (localOnly) payload.note = 'Loopback fallback — set ORIGIN_PUBLIC_WS / ORIGIN_PUBLIC_RPC to your externally reachable endpoints before inviting peers.';
+      return send(res, 200, payload);
     }
 
     // ---- 链数据 ----
